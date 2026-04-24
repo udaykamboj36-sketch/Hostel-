@@ -343,20 +343,22 @@ def page_students():
         with st.container():
             col1, col2 = st.columns(2)
             with col1:
-                new_id     = st.text_input("Student ID *", placeholder="e.g. STU007")
-                new_name   = st.text_input("Full Name *", placeholder="e.g. Anjali Mehta")
-                new_contact= st.text_input("Contact *", placeholder="10-digit phone")
-                new_email  = st.text_input("Email", placeholder="student@college.edu")
-            with col2:
-                new_course = st.selectbox("Course", utils.COURSES)
-                new_date   = st.date_input("Join Date", value=date.today())
-                rooms      = db.get_all_rooms()
-                available  = [r["room_number"] for r in rooms
-                               if r["occupied"] < r["capacity"]]
-                room_choice = st.selectbox(
-                    "Assign Room (or Auto)",
-                    ["Auto-assign"] + available
-                )
+    upd_name = st.text_input("Name", value=stu["name"])
+    upd_contact = st.text_input("Contact", value=stu["contact"] or "")
+    upd_email = st.text_input("Email", value=stu["email"] or "")
+
+with col2:
+    idx = utils.COURSES.index(stu["course"]) if stu["course"] in utils.COURSES else 0
+
+    upd_course = st.selectbox(
+        "Course",
+        utils.COURSES,
+        index=idx,
+        key=f"upd_course_{sel_id}_{idx}"
+    )
+
+    st.markdown(f"**Room:** {stu['room_number']}")
+    st.markdown(f"**Current Status:** {stu['status']}")
 
         if st.button("✅ Add Student", type="primary"):
             ok, msg = utils.validate_student_id(new_id)
