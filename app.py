@@ -403,7 +403,12 @@ def page_students():
                     upd_email   = st.text_input("Email",   value=stu["email"]   or "")
                 with col2:
                     idx = utils.COURSES.index(stu["course"]) if stu["course"] in utils.COURSES else 0
-                    upd_course  = st.selectbox("Course", utils.COURSES, index=idx)
+                upd_course = st.selectbox(
+                       "Course",
+                        utils.COURSES,
+                             index=idx,
+                       key=f"upd_course_{sel_id}"
+)
                     st.markdown(f"**Room:** {stu['room_number']}")
                     st.markdown(f"**Current Status:** {stu['status']}")
 
