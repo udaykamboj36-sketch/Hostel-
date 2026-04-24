@@ -831,18 +831,25 @@ def page_admin():
         st.markdown("#### 🔐 Admin Login")
         col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
-            with st.container():
-                uname = st.text_input("Username", placeholder="admin")
-                pwd   = st.text_input("Password", type="password")
-                if st.button("Login", type="primary", use_container_width=True):
-                    if db.verify_admin(uname, pwd):
-                        st.session_state.admin_logged_in = True
-                        st.success("✅ Logged in as admin.")
-                        st.rerun()
-                    else:
-                        st.error("❌ Invalid credentials.")
-            st.caption("Default: username `admin`, password `admin123`")
-        return
+         col1, col2 = st.columns(2)
+
+with col1:
+    upd_name = st.text_input("Name", value=stu["name"])
+    upd_contact = st.text_input("Contact", value=stu["contact"] or "")
+    upd_email = st.text_input("Email", value=stu["email"] or "")
+
+with col2:
+    idx = utils.COURSES.index(stu["course"]) if stu["course"] in utils.COURSES else 0
+
+    upd_course = st.selectbox(
+        "Course",
+        utils.COURSES,
+        index=idx,
+        key=f"upd_course_{sel_id}_{idx}"
+    )
+
+    st.markdown(f"**Room:** {stu['room_number']}")
+    st.markdown(f"**Current Status:** {stu['status']}")
 
     # ── Admin Dashboard ──────────────────────
     stats = db.get_dashboard_stats()
