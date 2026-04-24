@@ -401,16 +401,18 @@ def page_students():
                     upd_name    = st.text_input("Name",    value=stu["name"])
                     upd_contact = st.text_input("Contact", value=stu["contact"] or "")
                     upd_email   = st.text_input("Email",   value=stu["email"]   or "")
-                with col2:
-                    idx = utils.COURSES.index(stu["course"]) if stu["course"] in utils.COURSES else 0
-                upd_course = st.selectbox(
-                       "Course",
-                        utils.COURSES,
-                             index=idx,
-                       key=f"upd_course_{sel_id}"
-)
-                    st.markdown(f"**Room:** {stu['room_number']}")
-                    st.markdown(f"**Current Status:** {stu['status']}")
+              with col2:
+    idx = utils.COURSES.index(stu["course"]) if stu["course"] in utils.COURSES else 0
+    
+    upd_course = st.selectbox(
+        "Course",
+        utils.COURSES,
+        index=idx,
+        key=f"upd_course_{sel_id}_{idx}"
+    )
+
+    st.markdown(f"**Room:** {stu['room_number']}")
+    st.markdown(f"**Current Status:** {stu['status']}")
 
                 col_save, col_del = st.columns([2, 1])
                 with col_save:
